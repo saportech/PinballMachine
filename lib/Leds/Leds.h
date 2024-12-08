@@ -16,7 +16,7 @@ public:
     bool finishedCountDown();
     void turnOnAllLeds();
 private:
-    int led[NO_OF_LEDS] = {16, 17, 18, 19};
+    int led[NO_OF_LEDS] = {14, 4, 18, 19};//Changed first 2 pins from 16,17 to 14,4
 };
 
 #endif // LEDS_H

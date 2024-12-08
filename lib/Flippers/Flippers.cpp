@@ -54,10 +54,13 @@ void Flippers::play() {
             flipperState[i] = true;
             lastPlayTime[i] = millis();
             Serial.println("Button number " + String(i + 1) + " pressed");
-        } else if (flipperState[i] && millis() - lastPlayTime[i] >= 100) {
+        } else if (flipperState[i] && millis() - lastPlayTime[i] >= 200) {
             digitalWrite(flipper[i], HIGH);
             flipperState[i] = false;
             lastPlayTime[i] = millis();
+        }
+        if (digitalRead(5) == LOW) {
+            Serial.println("Start button pressed");
         }
     }
 }

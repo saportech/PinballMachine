@@ -10,6 +10,8 @@ Flippers flippers;
 
 int button[7] = {33, 32, 35, 39, 12, 36, 5};
 
+bool startButtonPressed();
+
 void testInputs() {
     for (int i = 0; i < 7; i++) {
         int val = digitalRead(button[i]);
@@ -25,7 +27,6 @@ void testInputs() {
     }
 }
 
-
 void setup() {
     Serial.begin(115200);
     Serial.println("Flippers");
@@ -38,6 +39,10 @@ void loop() {
 
     //testInputs();
 
+    //flippers.play();
+
+    //ledsObj.turnOnAllLeds();
+
     FlipperGamestateMachine();
 
 }
@@ -48,7 +53,7 @@ static unsigned long lastMillis;
 
     switch (pinball_state) {
         case PINBALL_IDLE:
-            if (digitalRead(START_SW_PIN) == LOW) {
+            if (startButtonPressed()) {
                 Serial.println("Starting, Door opened, leds ON");
                 digitalWrite(DOOR_PIN, LOW);
                 ledsObj.turnOnAllLeds();
@@ -89,4 +94,24 @@ static unsigned long lastMillis;
             }
             break;
     }
+}
+
+bool startButtonPressed() {// Function to check if the start button is pressed more than 200 milliseconds
+    const unsigned long debounceDelay = 100;
+    static bool startButtonPressed = false;
+    static unsigned long pressStartTime = 0;
+
+    if (digitalRead(START_SW_PIN) == LOW) {
+        if (!startButtonPressed) {
+            startButtonPressed = true;
+            pressStartTime = millis();
+        } else if (millis() - pressStartTime >= debounceDelay) {
+            return true;
+        }
+    } else {
+        startButtonPressed = false;
+    }
+
+    return false;
+
 }
